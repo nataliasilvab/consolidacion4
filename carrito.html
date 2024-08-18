@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito de Compras</title>
+</head>
+
+<body>
+
+    <script>
+        class Producto {
+            constructor(nombre, precio) {
+                this.nombre = nombre;
+                this.precio = precio;
+            }
+        }
+    
+        class Carrito {
+            constructor() {
+                this.productos = [];
+            }
+    
+            addProducto(producto) {
+                this.productos.push(producto);
+            }
+    
+            calcularTotalCompra() {
+                let total = 0;
+                for (let producto of this.productos) {
+                    total += producto.precio;
+                }
+                return total;
+            }
+    
+            finalizarCompra() {
+                const total = this.calcularTotalCompra();
+                const resumen = {
+                    productos: this.productos.map(p => p.nombre),
+                    total: total
+                };
+                return resumen; 
+            }
+        }
+    
+        const productosDisponibles = [
+            ["Leche", 1000],
+            ["Pan de molde", 2000],
+            ["Queso", 1200],
+            ["Mermelada", 890],
+            ["Azúcar", 1300]
+        ];
+    
+        const carrito = new Carrito();
+    
+        let agregarMas = true;
+        while (agregarMas) {
+            let opciones = productosDisponibles.map((p, index) => `${index + 1}. ${p[0]} ($${p[1]})`).join("\n");
+            const seleccion = prompt(`Selecciona un producto:\n${opciones}\nIngresa el número del producto:`);
+    
+            const indexSeleccionado = parseInt(seleccion) - 1;
+            if (indexSeleccionado >= 0 && indexSeleccionado < productosDisponibles.length) {
+                const producto = new Producto(productosDisponibles[indexSeleccionado][0], productosDisponibles[indexSeleccionado][1]);
+                carrito.addProducto(producto);
+            } else {
+                alert("Selección inválida. Por favor, elige un número válido.");
+            }
+    
+            agregarMas = confirm("¿Quieres agregar otro producto?");
+        }
+    
+        const resumenCompra = carrito.finalizarCompra();
+        alert("Resumen de la compra:\n" +
+            "Productos: " + resumenCompra.productos.join(", ") + "\n" +
+            "Total: $" + resumenCompra.total.toFixed(2));
+    
+        console.log("Resumen de la compra:", resumenCompra);
+
+    </script>
+    
+
+</body>
+
+</html>
